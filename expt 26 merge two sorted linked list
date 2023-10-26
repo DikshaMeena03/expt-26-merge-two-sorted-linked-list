@@ -1,0 +1,102 @@
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node* next;
+
+    Node(int value) {
+        data = value;
+        next = nullptr;
+    }
+};
+
+class LinkedList {
+private:
+    Node* head;
+
+public:
+    LinkedList() {
+        head = nullptr;
+    }
+
+    void insert(int value) {
+        Node* newNode = new Node(value);
+
+        if (head == nullptr) {
+            head = newNode;
+        } else {
+            Node* current = head;
+            while (current->next != nullptr) {
+                current = current->next;
+            }
+            current->next = newNode;
+        }
+    }
+
+    void display() {
+        if (head == nullptr) {
+            std::cout << "The list is empty." << std::endl;
+            return;
+        }
+
+        Node* current = head;
+        std::cout << "Linked List: ";
+        while (current != nullptr) {
+            std::cout << current->data << " ";
+            current = current->next;
+        }
+        std::cout << std::endl;
+    }
+
+    static LinkedList mergeSortedLists(LinkedList& list1, LinkedList& list2) {
+        LinkedList mergedList;
+        Node* current1 = list1.head;
+        Node* current2 = list2.head;
+
+        while (current1 != nullptr && current2 != nullptr) {
+            if (current1->data <= current2->data) {
+                mergedList.insert(current1->data);
+                current1 = current1->next;
+            } else {
+                mergedList.insert(current2->data);
+                current2 = current2->next;
+            }
+        }
+
+        while (current1 != nullptr) {
+            mergedList.insert(current1->data);
+            current1 = current1->next;
+        }
+
+        while (current2 != nullptr) {
+            mergedList.insert(current2->data);
+            current2 = current2->next;
+        }
+
+        return mergedList;
+    }
+};
+
+int main() {
+    LinkedList list1;
+    LinkedList list2;
+
+    list1.insert(10);
+    list1.insert(30);
+    list1.insert(50);
+
+    list2.insert(20);
+    list2.insert(40);
+    list2.insert(60);
+
+    list1.display();
+    list2.display();
+
+    LinkedList mergedList = LinkedList::mergeSortedLists(list1, list2);
+
+    mergedList.display();
+
+    return 0;
+}
